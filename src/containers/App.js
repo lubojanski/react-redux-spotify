@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { search, selectFilter, fetchAlbumsIfNeeded } from '../actions'
+import { search, selectFilter, fetchAlbumsIfNeeded, fetchTracksIfNeeded } from '../actions'
 import Picker from '../components/Picker'
 import Albums from '../components/Albums'
+import Tracks from '../components/Tracks'
 import Search from '../components/Search'
 
 class App extends Component {
@@ -10,6 +11,7 @@ class App extends Component {
 
     selectedFilter: PropTypes.string.isRequired,
     albums: PropTypes.array.isRequired,
+    tracks: PropTypes.array.isRequired,
     isFetching: PropTypes.bool.isRequired,
     searchTerm: PropTypes.string,
     dispatch: PropTypes.func.isRequired
@@ -18,15 +20,16 @@ class App extends Component {
   componentDidMount() {
     const { dispatch, searchTerm } = this.props
     dispatch(fetchAlbumsIfNeeded(searchTerm))
+    dispatch(fetchTracksIfNeeded(searchTerm))
   }
 
   componentWillReceiveProps(nextProps) {////////////////////////////////////////////
     if (nextProps.searchTerm !== this.props.searchTerm) {
       const { dispatch, searchTerm } = nextProps
       dispatch(fetchAlbumsIfNeeded(searchTerm))
+      dispatch(fetchTracksIfNeeded(searchTerm))
     }
   }
-
 
   handleChange = nextFilter => {
     this.props.dispatch(selectFilter(nextFilter))
@@ -35,7 +38,7 @@ class App extends Component {
     this.props.dispatch(search(nextTerm))
   }
   render() {
-    const { selectedFilter, albums, isFetching, searchTerm } = this.props
+    const { selectedFilter, albums, tracks, isFetching, searchTerm } = this.props
     const isEmpty = albums.length === 0
     return (
       <div>
@@ -51,6 +54,9 @@ class App extends Component {
               <Albums albums={albums} />
             </div>
         } 
+        <div>
+        <Tracks tracks={tracks} />
+            </div>
       </div>
     )
   }
@@ -58,20 +64,32 @@ class App extends Component {
 
 const mapStateToProps = state => {
   //debugger;
-  const { selectedFilter, albumsByArtist, searchTerm} = state     //var selectedFilter = state.selectedFilter;
+  const { selectedFilter, albumsByArtist, tracksByArtist, searchTerm} = state     //var selectedFilter = state.selectedFilter;
+  
   const {
-    isFetching,
+
     items: albums
-  } = albumsByArtist[searchTerm] ||  
+  } = albumsByArtist.items ||  
   {
-    isFetching: true,
+
     items: []
   }
+
+  const {
+
+    items: tracks
+  } = tracksByArtist.items ||  
+  {
+
+    items: []
+  }
+
+
 
   return {
     selectedFilter,
     albums,
-    isFetching,
+    tracks,
     searchTerm
   }
 }

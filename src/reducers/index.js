@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux'
 import {
   SELECT_FILTER, SEARCH,
-  REQUEST_ALBUMS, RECEIVE_ALBUMS
+  REQUEST_ALBUMS, RECEIVE_ALBUMS, 
+  REQUEST_TRACKS, RECEIVE_TRACKS, 
 } from '../actions'
 
 const selectedFilter = (state = 'albums', action) => {
@@ -47,15 +48,54 @@ const albumsByArtist = (state = { }, action) => {
     case REQUEST_ALBUMS:
       return {
         ...state,
-        [action.artist]: albums(state[action.artist], action)
+        items: albums(state[action.artist], action)
       }
     default:
       return state
   }
 }
 
+const tracks = (state = {
+  isFetching: false,
+  items: []
+}, action) => {
+  switch (action.type) {
+    case REQUEST_TRACKS:
+      return {
+        ...state,
+        isFetching: true
+      }
+    case RECEIVE_TRACKS:
+      return {
+        ...state,
+        isFetching: false,
+        items: action.tracks,
+      }
+    default:
+      return state
+  }
+}
+
+const tracksByArtist = (state = { }, action) => {
+  switch (action.type) {
+    case RECEIVE_TRACKS:
+    case REQUEST_TRACKS:
+      return {
+        ...state,
+        items: tracks(state[action.artist], action)
+      }
+    default:
+      return state
+  }
+}
+
+
+
+
+
 const rootReducer = combineReducers({
   albumsByArtist,
+  tracksByArtist,
   selectedFilter,
   searchTerm
 })
