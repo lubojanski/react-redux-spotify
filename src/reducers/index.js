@@ -5,7 +5,7 @@ import {
   REQUEST_TRACKS, RECEIVE_TRACKS, 
 } from '../actions'
 
-const selectedFilter = (state = 'albums', action) => {
+const selectedFilter = (state = '', action) => {
   switch (action.type) {
     case SELECT_FILTER:
       return action.filter //
@@ -13,7 +13,7 @@ const selectedFilter = (state = 'albums', action) => {
       return state
   }
 }
-const searchTerm = (state = 'albums', action) => {
+const searchTerm = (state = 'rick astley', action) => {
   switch (action.type) {
     case SEARCH:
       return action.term

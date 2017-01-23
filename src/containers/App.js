@@ -9,10 +9,10 @@ import Search from '../components/Search'
 class App extends Component {
   static propTypes = {
 
-    selectedFilter: PropTypes.string.isRequired,
+    selectedFilter: PropTypes.number.isRequired,
     albums: PropTypes.array.isRequired,
     tracks: PropTypes.array.isRequired,
-    isFetching: PropTypes.bool.isRequired,
+    isFetching: PropTypes.bool,
     searchTerm: PropTypes.string,
     dispatch: PropTypes.func.isRequired
   }
@@ -31,32 +31,25 @@ class App extends Component {
     }
   }
 
-  handleChange = nextFilter => {
+  handleClick = (event) => {
+    var nextFilter = Number.parseInt(event.currentTarget.dataset.id)
     this.props.dispatch(selectFilter(nextFilter))
   }
   handleSearch = nextTerm => {
     this.props.dispatch(search(nextTerm))
   }
+
   render() {
     const { selectedFilter, albums, tracks, isFetching, searchTerm } = this.props
     const isEmpty = albums.length === 0
+
     return (
       <div>
-      <Search   value={searchTerm}
-                onKeyUp={this.handleSearch} />
-        <Picker value={selectedFilter}
-                onChange={this.handleChange}
-                options={[ 'albums', 'tracks' ]} />
-
-        {isEmpty
-          ? (isFetching ? <h2>Loading...</h2> : <h2>Empty.</h2>)
-          : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
-              <Albums albums={albums} />
-            </div>
-        } 
-        <div>
-        <Tracks tracks={tracks} />
-            </div>
+        <Search   value={searchTerm}
+                  onKeyUp={this.handleSearch} />
+        <Picker 
+                  onClick={this.handleClick}/>      
+        {selectedFilter ? <Tracks tracks={tracks} /> : <Albums albums={albums} />}  
       </div>
     )
   }
@@ -67,20 +60,16 @@ const mapStateToProps = state => {
   const { selectedFilter, albumsByArtist, tracksByArtist, searchTerm} = state     //var selectedFilter = state.selectedFilter;
   
   const {
-
     items: albums
   } = albumsByArtist.items ||  
   {
-
     items: []
   }
 
   const {
-
     items: tracks
   } = tracksByArtist.items ||  
   {
-
     items: []
   }
 

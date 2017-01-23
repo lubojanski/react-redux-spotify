@@ -1,8 +1,7 @@
 import React, { PropTypes } from 'react'
 
-const Search = ({value, onKeyUp}) => (
+const Search = ({onKeyUp}) => (
   <span>
-    <h1>{value}</h1>
     <input type="text" onKeyUp={e => onKeyUp(e.target.value)} />
 
       

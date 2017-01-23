@@ -1,25 +1,14 @@
 import React, { PropTypes } from 'react'
 
-const Picker = ({ value, onChange, options }) => (
+const Picker = ({  onClick }) => (
   <span>
-    <h1>{value}</h1>
-    <select onChange={e => onChange(e.target.value)}
-            value={value}>
-      {options.map(option =>
-        <option value={option} key={option}>
-          {option}
-        </option>)
-      }
-    </select>
+    <button type="button" data-id='0' onClick={onClick}>Albums</button> 
+    <button type="button" data-id='1' onClick={onClick}>Tracks</button>
   </span>
 )
 
 Picker.propTypes = {
-  options: PropTypes.arrayOf(
-    PropTypes.string.isRequired
-  ).isRequired,
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired
+  onClick: PropTypes.func.isRequired
 }
-
+//className={this.state.selectedItem == 1 ? "on" : "off"}
 export default Picker
