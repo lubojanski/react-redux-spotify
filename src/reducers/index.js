@@ -1,56 +1,53 @@
 import { combineReducers } from 'redux'
 import {
-  SELECT_REDDIT, INVALIDATE_REDDIT,
-  REQUEST_POSTS, RECEIVE_POSTS
+  SELECT_FILTER, SEARCH,
+  REQUEST_ALBUMS, RECEIVE_ALBUMS
 } from '../actions'
 
-const selectedReddit = (state = 'reactjs', action) => {
+const selectedFilter = (state = 'albums', action) => {
   switch (action.type) {
-    case SELECT_REDDIT:
-      return action.reddit
+    case SELECT_FILTER:
+      return action.filter //
     default:
       return state
   }
 }
-
-const posts = (state = {
+const searchTerm = (state = 'albums', action) => {
+  switch (action.type) {
+    case SEARCH:
+      return action.term
+    default:
+      return state
+  }
+}
+const albums = (state = {
   isFetching: false,
-  didInvalidate: false,
   items: []
 }, action) => {
   switch (action.type) {
-    case INVALIDATE_REDDIT:
+    case REQUEST_ALBUMS:
       return {
         ...state,
-        didInvalidate: true
+        isFetching: true
       }
-    case REQUEST_POSTS:
-      return {
-        ...state,
-        isFetching: true,
-        didInvalidate: false
-      }
-    case RECEIVE_POSTS:
+    case RECEIVE_ALBUMS:
       return {
         ...state,
         isFetching: false,
-        didInvalidate: false,
-        items: action.posts,
-        lastUpdated: action.receivedAt
+        items: action.albums,
       }
     default:
       return state
   }
 }
 
-const postsByReddit = (state = { }, action) => {
+const albumsByArtist = (state = { }, action) => {
   switch (action.type) {
-    case INVALIDATE_REDDIT:
-    case RECEIVE_POSTS:
-    case REQUEST_POSTS:
+    case RECEIVE_ALBUMS:
+    case REQUEST_ALBUMS:
       return {
         ...state,
-        [action.reddit]: posts(state[action.reddit], action)
+        [action.artist]: albums(state[action.artist], action)
       }
     default:
       return state
@@ -58,8 +55,9 @@ const postsByReddit = (state = { }, action) => {
 }
 
 const rootReducer = combineReducers({
-  postsByReddit,
-  selectedReddit
+  albumsByArtist,
+  selectedFilter,
+  searchTerm
 })
 
 export default rootReducer

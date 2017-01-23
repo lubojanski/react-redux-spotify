@@ -1,91 +1,78 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { selectReddit, fetchPostsIfNeeded, invalidateReddit } from '../actions'
+import { search, selectFilter, fetchAlbumsIfNeeded } from '../actions'
 import Picker from '../components/Picker'
-import Posts from '../components/Posts'
+import Albums from '../components/Albums'
+import Search from '../components/Search'
 
 class App extends Component {
   static propTypes = {
-    selectedReddit: PropTypes.string.isRequired,
-    posts: PropTypes.array.isRequired,
+
+    selectedFilter: PropTypes.string.isRequired,
+    albums: PropTypes.array.isRequired,
     isFetching: PropTypes.bool.isRequired,
-    lastUpdated: PropTypes.number,
+    searchTerm: PropTypes.string,
     dispatch: PropTypes.func.isRequired
   }
 
   componentDidMount() {
-    const { dispatch, selectedReddit } = this.props
-    dispatch(fetchPostsIfNeeded(selectedReddit))
+    const { dispatch, searchTerm } = this.props
+    dispatch(fetchAlbumsIfNeeded(searchTerm))
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.selectedReddit !== this.props.selectedReddit) {
-      const { dispatch, selectedReddit } = nextProps
-      dispatch(fetchPostsIfNeeded(selectedReddit))
+  componentWillReceiveProps(nextProps) {////////////////////////////////////////////
+    if (nextProps.searchTerm !== this.props.searchTerm) {
+      const { dispatch, searchTerm } = nextProps
+      dispatch(fetchAlbumsIfNeeded(searchTerm))
     }
   }
 
-  handleChange = nextReddit => {
-    this.props.dispatch(selectReddit(nextReddit))
+
+  handleChange = nextFilter => {
+    this.props.dispatch(selectFilter(nextFilter))
   }
-
-  handleRefreshClick = e => {
-    e.preventDefault()
-
-    const { dispatch, selectedReddit } = this.props
-    dispatch(invalidateReddit(selectedReddit))
-    dispatch(fetchPostsIfNeeded(selectedReddit))
+  handleSearch = nextTerm => {
+    this.props.dispatch(search(nextTerm))
   }
-
   render() {
-    const { selectedReddit, posts, isFetching, lastUpdated } = this.props
-    const isEmpty = posts.length === 0
+    const { selectedFilter, albums, isFetching, searchTerm } = this.props
+    const isEmpty = albums.length === 0
     return (
       <div>
-        <Picker value={selectedReddit}
+      <Search   value={searchTerm}
+                onKeyUp={this.handleSearch} />
+        <Picker value={selectedFilter}
                 onChange={this.handleChange}
-                options={[ 'reactjs', 'frontend' ]} />
-        <p>
-          {lastUpdated &&
-            <span>
-              Last updated at {new Date(lastUpdated).toLocaleTimeString()}.
-              {' '}
-            </span>
-          }
-          {!isFetching &&
-            <a href="#"
-               onClick={this.handleRefreshClick}>
-              Refresh
-            </a>
-          }
-        </p>
+                options={[ 'albums', 'tracks' ]} />
+
         {isEmpty
           ? (isFetching ? <h2>Loading...</h2> : <h2>Empty.</h2>)
           : <div style={{ opacity: isFetching ? 0.5 : 1 }}>
-              <Posts posts={posts} />
+              <Albums albums={albums} />
             </div>
-        }
+        } 
       </div>
     )
   }
 }
 
 const mapStateToProps = state => {
-  const { selectedReddit, postsByReddit } = state
+  //debugger;
+  const { selectedFilter, albumsByArtist, searchTerm} = state     //var selectedFilter = state.selectedFilter;
   const {
     isFetching,
-    lastUpdated,
-    items: posts
-  } = postsByReddit[selectedReddit] || {
+    items: albums
+  } = albumsByArtist[searchTerm] ||  
+  {
     isFetching: true,
     items: []
   }
 
   return {
-    selectedReddit,
-    posts,
+    selectedFilter,
+    albums,
     isFetching,
-    lastUpdated
+    searchTerm
   }
 }
 
