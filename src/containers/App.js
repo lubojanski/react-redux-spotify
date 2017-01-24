@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { search, selectFilter, fetchAlbumsIfNeeded, fetchTracksIfNeeded } from '../actions'
+import { search, selectFilter } from '../actions/input.action'
+import { fetchAlbumsIfNeeded} from '../actions/album.action'
+import { fetchTracksIfNeeded } from '../actions/track.action'
 import Picker from '../components/Picker'
 import Albums from '../components/Albums'
 import Tracks from '../components/Tracks'
@@ -8,7 +10,6 @@ import Search from '../components/Search'
 
 class App extends Component {
   static propTypes = {
-
     selectedFilter: PropTypes.number.isRequired,
     albums: PropTypes.array.isRequired,
     tracks: PropTypes.array.isRequired,
