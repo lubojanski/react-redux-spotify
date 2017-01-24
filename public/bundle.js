@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "38043c71d3451006dc76"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "bce95f17fb98768d466e"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -8486,6 +8486,8 @@
 	var _App2 = _interopRequireDefault(_App);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./styles.css\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 
 	var middleware = [_reduxThunk2.default];
 	if (process.env.NODE_ENV !== 'production') {
@@ -32811,9 +32813,11 @@
 
 	var reducer = (0, _redux.combineReducers)({
 	  albumsByArtist: _album2.default,
+	  albumTracks: _album.albumTracks,
 	  tracksByArtist: _track2.default,
 	  selectedFilter: _input.selectedFilter,
-	  searchTerm: _input.searchTerm
+	  searchTerm: _input.searchTerm,
+	  showAlbumTracks: _album.showAlbumTracks
 	});
 
 	exports.default = reducer;
@@ -32832,10 +32836,12 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.showAlbumTracks = undefined;
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	exports.default = albumsByArtist;
+	exports.albumTracks = albumTracks;
 
 	var _album = __webpack_require__(303);
 
@@ -32876,6 +32882,54 @@
 	  }
 	}
 
+	var tracks = function tracks() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+	    isFetching: false,
+	    items: []
+	  };
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case _album.REQUEST_ALBUM_TRACKS:
+	      return _extends({}, state, {
+	        isFetching: true
+	      });
+	    case _album.RECEIVE_ALBUM_TRACKS:
+	      return _extends({}, state, {
+	        isFetching: false,
+	        items: action.albumTracks
+	      });
+	    default:
+	      return state;
+	  }
+	};
+	function albumTracks() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case _album.RECEIVE_ALBUM_TRACKS:
+	    case _album.REQUEST_ALBUM_TRACKS:
+	      return _extends({}, state, {
+	        items: tracks(state[action.href], action)
+	      });
+	    default:
+	      return state;
+	  }
+	}
+
+	var showAlbumTracks = exports.showAlbumTracks = function showAlbumTracks() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case _album.SHOW_ALBUM_TRACKS:
+	      return action.isSelected;
+	    default:
+	      return state;
+	  }
+	};
+
 	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(304); if (makeExportsHot(module, __webpack_require__(174))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot apply hot update to " + "album.reducer.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
@@ -32892,6 +32946,16 @@
 	});
 	var REQUEST_ALBUMS = exports.REQUEST_ALBUMS = 'REQUEST_ALBUMS';
 	var RECEIVE_ALBUMS = exports.RECEIVE_ALBUMS = 'RECEIVE_ALBUMS';
+	var REQUEST_ALBUM_TRACKS = exports.REQUEST_ALBUM_TRACKS = 'REQUEST_ALBUM_TRACKS';
+	var RECEIVE_ALBUM_TRACKS = exports.RECEIVE_ALBUM_TRACKS = 'RECEIVE_ALBUM_TRACKS';
+	var SHOW_ALBUM_TRACKS = exports.SHOW_ALBUM_TRACKS = 'SHOW_ALBUM_TRACKS';
+
+	var showAlbumTracks = exports.showAlbumTracks = function showAlbumTracks(isSelected) {
+	  return {
+	    type: SHOW_ALBUM_TRACKS,
+	    isSelected: isSelected
+	  };
+	};
 
 	var requestAlbums = exports.requestAlbums = function requestAlbums(artist) {
 	  return {
@@ -32908,16 +32972,47 @@
 	      return {
 	        name: item.name,
 	        artist: item.artists[0].name,
-	        cover: item.images[2].url
+	        cover: item.images[2].url,
+	        href: item.href
 	      };
 	    })
+	  };
+	};
+
+	var requestAlbumTracks = exports.requestAlbumTracks = function requestAlbumTracks(href) {
+	  return {
+	    type: REQUEST_ALBUM_TRACKS,
+	    href: href
+	  };
+	};
+
+	var receiveAlbumTracks = exports.receiveAlbumTracks = function receiveAlbumTracks(href, json) {
+	  return {
+	    type: RECEIVE_ALBUM_TRACKS,
+	    href: href,
+	    albumTracks: json.tracks.items.map(function (item) {
+	      return {
+	        name: item.name,
+	        previewUrl: item.preview_url
+	      };
+	    })
+	  };
+	};
+	var fetchAlbumTracks = exports.fetchAlbumTracks = function fetchAlbumTracks(href) {
+	  return function (dispatch) {
+	    dispatch(requestAlbumTracks(href));
+	    return fetch(href).then(function (response) {
+	      return response.json();
+	    }).then(function (tracks) {
+	      return dispatch(receiveAlbumTracks(href, tracks));
+	    });
 	  };
 	};
 
 	var fetchAlbums = function fetchAlbums(artist) {
 	  return function (dispatch) {
 	    dispatch(requestAlbums(artist));
-	    return fetch('https://api.spotify.com/v1/search?q=' + artist + '&type=album').then(function (response) {
+	    return fetch('https://api.spotify.com/v1/search?q=artist:' + artist + '&type=album').then(function (response) {
 	      return response.json();
 	    }).then(function (albums) {
 	      return dispatch(receiveAlbums(artist, albums));
@@ -32933,7 +33028,6 @@
 	  if (albums.isFetching) {
 	    return false;
 	  }
-	  return true; // temp
 	};
 	var fetchAlbumsIfNeeded = exports.fetchAlbumsIfNeeded = function fetchAlbumsIfNeeded(artist) {
 	  return function (dispatch, getState) {
@@ -33159,8 +33253,10 @@
 	    tracks: json.tracks.items.map(function (item) {
 	      return {
 	        name: item.name,
+	        number: item.track_number,
 	        artist: item.artists[0].name,
-	        cover: item.album.images[2].url
+	        cover: item.album.images[2].url,
+	        previewUrl: item.preview_url
 	      };
 	    })
 	  };
@@ -33169,7 +33265,7 @@
 	var fetchTracks = function fetchTracks(artist) {
 	  return function (dispatch) {
 	    dispatch(requestTracks(artist));
-	    return fetch('https://api.spotify.com/v1/search?q=' + artist + '&type=track').then(function (response) {
+	    return fetch('https://api.spotify.com/v1/search?q=artist:' + artist + '&type=track').then(function (response) {
 	      return response.json();
 	    }).then(function (tracks) {
 	      return dispatch(receiveTracks(artist, tracks));
@@ -33189,9 +33285,9 @@
 	};
 	var fetchTracksIfNeeded = exports.fetchTracksIfNeeded = function fetchTracksIfNeeded(artist) {
 	  return function (dispatch, getState) {
-	    // if (shouldFetchAlbums(getState(), artist)) {
-	    return dispatch(fetchTracks(artist));
-	    // }
+	    if (shouldFetchTracks(getState(), artist)) {
+	      return dispatch(fetchTracks(artist));
+	    }
 	  };
 	};
 
@@ -33320,6 +33416,8 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./app.css\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+
 	var App = function (_Component) {
 	  _inherits(App, _Component);
 
@@ -33334,11 +33432,24 @@
 	      args[_key] = arguments[_key];
 	    }
 
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = App.__proto__ || Object.getPrototypeOf(App)).call.apply(_ref, [this].concat(args))), _this), _this.handleClick = function (event) {
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = App.__proto__ || Object.getPrototypeOf(App)).call.apply(_ref, [this].concat(args))), _this), _this.handleFilterClick = function (event) {
 	      var nextFilter = Number.parseInt(event.currentTarget.dataset.id);
 	      _this.props.dispatch((0, _input.selectFilter)(nextFilter));
 	    }, _this.handleSearch = function (nextTerm) {
 	      _this.props.dispatch((0, _input.search)(nextTerm));
+	    }, _this.handleAlbumClick = function (albumHref) {
+
+	      if (_this.isSelected) {
+	        _this.isSelected = false;
+	        _this.props.dispatch((0, _album.showAlbumTracks)(_this.isSelected));
+	        console.log(_this.isSelected);
+	      } else {
+
+	        _this.props.dispatch((0, _album.fetchAlbumTracks)(albumHref));
+	        _this.isSelected = true;
+	        _this.props.dispatch((0, _album.showAlbumTracks)(_this.isSelected));
+	        console.log(_this.isSelected);
+	      }
 	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
 
@@ -33355,7 +33466,6 @@
 	  }, {
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
-	      ////////////////////////////////////////////
 	      if (nextProps.searchTerm !== this.props.searchTerm) {
 	        var dispatch = nextProps.dispatch,
 	            searchTerm = nextProps.searchTerm;
@@ -33372,18 +33482,65 @@
 	          albums = _props2.albums,
 	          tracks = _props2.tracks,
 	          isFetching = _props2.isFetching,
-	          searchTerm = _props2.searchTerm;
+	          searchTerm = _props2.searchTerm,
+	          albumTrackss = _props2.albumTrackss,
+	          showAlbumTracks = _props2.showAlbumTracks;
 
 	      var isEmpty = albums.length === 0;
 
 	      return _react2.default.createElement(
 	        'div',
-	        null,
-	        _react2.default.createElement(_Search2.default, { value: searchTerm,
-	          onKeyUp: this.handleSearch }),
-	        _react2.default.createElement(_Picker2.default, {
-	          onClick: this.handleClick }),
-	        selectedFilter ? _react2.default.createElement(_Tracks2.default, { tracks: tracks }) : _react2.default.createElement(_Albums2.default, { albums: albums })
+	        { className: 'container' },
+	        _react2.default.createElement(
+	          'header',
+	          null,
+	          _react2.default.createElement(
+	            'h1',
+	            null,
+	            'Find the music you love.'
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'outlet' },
+	          _react2.default.createElement(
+	            'form',
+	            { className: 'search-form' },
+	            _react2.default.createElement(_Search2.default, { value: searchTerm,
+	              onKeyUp: this.handleSearch })
+	          ),
+	          _react2.default.createElement(
+	            'nav',
+	            null,
+	            _react2.default.createElement(_Picker2.default, {
+	              onClick: this.handleFilterClick })
+	          ),
+	          '// albumTrackss.map((track, i) => //       ',
+	          _react2.default.createElement(
+	            'li',
+	            { key: i, className: 'album-tracks-row' },
+	            '//         ',
+	            _react2.default.createElement(
+	              'a',
+	              { href: track.preview_url, target: '_blank' },
+	              track.number,
+	              '. - ',
+	              track.name,
+	              '  ',
+	              _react2.default.createElement(
+	                'span',
+	                { className: 'orange' },
+	                '      play '
+	              )
+	            ),
+	            '// '
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'list-container' },
+	            selectedFilter ? _react2.default.createElement(_Tracks2.default, { tracks: tracks }) : _react2.default.createElement(_Albums2.default, { albums: albums, isSelected: showAlbumTracks, albumTracks: albumTrackss, onClick: this.handleAlbumClick })
+	          )
+	        )
 	      );
 	    }
 	  }]);
@@ -33394,19 +33551,24 @@
 	App.propTypes = {
 	  selectedFilter: _react.PropTypes.number.isRequired,
 	  albums: _react.PropTypes.array.isRequired,
+
 	  tracks: _react.PropTypes.array.isRequired,
 	  isFetching: _react.PropTypes.bool,
 	  searchTerm: _react.PropTypes.string,
-	  dispatch: _react.PropTypes.func.isRequired
+	  dispatch: _react.PropTypes.func.isRequired,
+	  isSelected: _react.PropTypes.bool,
+	  albumTrackss: _react.PropTypes.object,
+	  showAlbumTracks: _react.PropTypes.bool
 	};
 
 
 	var mapStateToProps = function mapStateToProps(state) {
-	  //debugger;
 	  var selectedFilter = state.selectedFilter,
 	      albumsByArtist = state.albumsByArtist,
 	      tracksByArtist = state.tracksByArtist,
-	      searchTerm = state.searchTerm; //var selectedFilter = state.selectedFilter;
+	      searchTerm = state.searchTerm,
+	      showAlbumTracks = state.showAlbumTracks,
+	      albumTracks = state.albumTracks;
 
 	  var _ref2 = albumsByArtist.items || {
 	    items: []
@@ -33418,11 +33580,18 @@
 	  },
 	      tracks = _ref3.items;
 
+	  var _ref4 = albumTracks || {
+	    items: []
+	  },
+	      albumTrackss = _ref4.items;
+
 	  return {
 	    selectedFilter: selectedFilter,
 	    albums: albums,
 	    tracks: tracks,
-	    searchTerm: searchTerm
+	    searchTerm: searchTerm,
+	    showAlbumTracks: showAlbumTracks,
+	    albumTrackss: albumTrackss
 	  };
 	};
 
@@ -33437,7 +33606,7 @@
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(79), RootInstanceProvider = __webpack_require__(87), ReactMount = __webpack_require__(89), React = __webpack_require__(174); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -33449,20 +33618,23 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./picker.css\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+
+
 	var Picker = function Picker(_ref) {
 	  var onClick = _ref.onClick;
 	  return _react2.default.createElement(
-	    'span',
+	    "span",
 	    null,
 	    _react2.default.createElement(
-	      'button',
-	      { type: 'button', 'data-id': '0', onClick: onClick },
-	      'Albums'
+	      "button",
+	      { type: "button", "data-id": "0", onClick: onClick },
+	      "Albums"
 	    ),
 	    _react2.default.createElement(
-	      'button',
-	      { type: 'button', 'data-id': '1', onClick: onClick },
-	      'Tracks'
+	      "button",
+	      { type: "button", "data-id": "1", onClick: onClick },
+	      "Tracks"
 	    )
 	  );
 	};
@@ -33482,7 +33654,7 @@
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(79), RootInstanceProvider = __webpack_require__(87), ReactMount = __webpack_require__(89), React = __webpack_require__(174); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -33494,23 +33666,68 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./albums.css\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+
+
 	var Albums = function Albums(_ref) {
-	  var albums = _ref.albums;
+	  var albums = _ref.albums,
+	      albumTracks = _ref.albumTracks,
+	      _onClick = _ref.onClick,
+	      isSelected = _ref.isSelected;
 	  return _react2.default.createElement(
-	    'ul',
+	    "ul",
 	    null,
 	    albums.map(function (album, i) {
 	      return _react2.default.createElement(
-	        'li',
-	        { key: i },
-	        album.artist,
-	        ' ',
-	        album.name
+	        "li",
+	        { key: i, className: "albums-container-item", onClick: function onClick() {
+	            _onClick(album.href);
+	          } },
+	        _react2.default.createElement("img", { src: album.cover, alt: "img" }),
+	        _react2.default.createElement(
+	          "div",
+	          { className: "links" },
+	          _react2.default.createElement(
+	            "p",
+	            { className: "album-title" },
+	            album.artist,
+	            " - ",
+	            album.name
+	          ),
+	          _react2.default.createElement(
+	            "p",
+	            { className: "check-tracks" },
+	            " check tracklist "
+	          )
+	        ),
+	        _react2.default.createElement(
+	          "ul",
+	          null,
+	          isSelected ? { albumTracks: items.map(function (track, i) {
+	              return _react2.default.createElement(
+	                "li",
+	                { key: i, className: "album-tracks-row" },
+	                _react2.default.createElement(
+	                  "a",
+	                  { href: track.preview_url, target: "_blank" },
+	                  track.number,
+	                  ". - ",
+	                  track.name,
+	                  "  ",
+	                  _react2.default.createElement(
+	                    "span",
+	                    { className: "orange" },
+	                    "      play "
+	                  )
+	                )
+	              );
+	            }) } : "nope"
+	        )
 	      );
 	    })
 	  );
-	};
-	//<img src={album.cover} alt=""/> 
+	}; //     // <div *ngIf="albumTracks && album == selectedAlbum" class="album-tracks">
+	//
 	Albums.propTypes = {
 	  albums: _react.PropTypes.array.isRequired
 	};
@@ -33526,7 +33743,7 @@
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(79), RootInstanceProvider = __webpack_require__(87), ReactMount = __webpack_require__(89), React = __webpack_require__(174); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -33538,23 +33755,41 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./tracks.css\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+
+
 	var Tracks = function Tracks(_ref) {
 	  var tracks = _ref.tracks;
 	  return _react2.default.createElement(
-	    'ul',
+	    "ul",
 	    null,
 	    tracks.map(function (track, i) {
 	      return _react2.default.createElement(
-	        'li',
-	        { key: i },
-	        track.artist,
-	        ' ',
-	        track.name
+	        "li",
+	        { key: i, className: "tracks-container-item" },
+	        _react2.default.createElement("img", { className: "album-img", src: track.cover, alt: "" }),
+	        _react2.default.createElement(
+	          "div",
+	          { className: "album-links" },
+	          _react2.default.createElement(
+	            "a",
+	            { className: "track-link", href: track.previewUrl, target: "_self" },
+	            " ",
+	            track.artist,
+	            " - ",
+	            track.name
+	          ),
+	          _react2.default.createElement(
+	            "a",
+	            { className: "album-link" },
+	            " track.album.name "
+	          )
+	        )
 	      );
 	    })
 	  );
 	};
-	//<img src={track.cover} alt=""/> 
+	//
 	Tracks.propTypes = {
 	  tracks: _react.PropTypes.array.isRequired
 	};
@@ -33581,6 +33816,9 @@
 	var _react2 = _interopRequireDefault(_react);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./search.css\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+
 
 	var Search = function Search(_ref) {
 	  var _onKeyUp = _ref.onKeyUp;

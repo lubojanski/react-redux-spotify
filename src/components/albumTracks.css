@@ -1,0 +1,19 @@
+.album-tracks-item{
+box-sizing:border-box;
+width:auto;
+}
+
+.album-tracks-item a {
+color:initial;
+display:inline;
+font-size:.9em;
+text-decoration:none;
+text-shadow:5px 5px 14px #b7ab9d;
+vertical-align:baseline;
+}
+.album-tracks-item li{
+    list-style-type: none;
+}
+.album-tracks-item a:hover,.orange {
+color:#ff9523;
+}

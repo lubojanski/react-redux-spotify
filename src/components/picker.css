@@ -5,6 +5,7 @@ button{
     display: inline-block;
     background-color: #eee;
     border-radius: 4px;
+    outline: none;
 }
 
 button:visited,
@@ -21,4 +22,12 @@ button.active {
     color: #ff9523;
     background-color: #f4eade;
     box-shadow: -1px -1px 1px #dbd5d0;
+}
+.on{
+    color: #ff9523;
+    background-color: #e2cab1;
+}
+.off{
+    color: initial;
+    background-color: #f4eade;
 }

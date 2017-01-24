@@ -13,10 +13,7 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'react-hot!babel' // Use babel first, then react-hot. Babel used due to ES6 syntax.
       },
-      { test: /\.css$/, loader: ExtractTextPlugin.extract({
-                fallbackLoader: "style-loader",
-                loader: "css-loader"
-            }) }
+      { test: /\.css$/, loader: "style-loader!css-loader" }
         
     ]
   },
@@ -31,8 +28,5 @@ module.exports = {
   devServer: {
     contentBase: './public', // Target directory of the build code
     hot: true // Enable hot loader
-  },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin() // Include the React hot loader plugin
-  ]
+  }
 };

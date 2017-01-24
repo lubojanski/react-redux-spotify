@@ -13,8 +13,10 @@ export const receiveTracks = (artist, json) => ({
   tracks: json.tracks.items.map(item => {
     return {
     	name : item.name,
+      number: item.track_number,
     	artist : item.artists[0].name,
-      cover: item.album.images[2].url
+      cover: item.album.images[2].url,
+      previewUrl: item.preview_url
     }
   })
 })
@@ -24,7 +26,7 @@ export const receiveTracks = (artist, json) => ({
 
 const fetchTracks = artist  => dispatch => {
   dispatch(requestTracks(artist))
-  return fetch(`https://api.spotify.com/v1/search?q=${artist}&type=track`)
+  return fetch(`https://api.spotify.com/v1/search?q=artist:${artist}&type=track`)
     .then(response => response.json())
     .then(tracks =>  dispatch(receiveTracks(artist, tracks)))
 }
