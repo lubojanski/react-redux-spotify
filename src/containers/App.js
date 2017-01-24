@@ -1,3 +1,5 @@
+require("./app.css");
+
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { search, selectFilter } from '../actions/input.action'
@@ -45,12 +47,23 @@ class App extends Component {
     const isEmpty = albums.length === 0
 
     return (
-      <div>
+      <div className="container">
+        <header>
+                <h1>Find the music you love.</h1>
+        </header>
+      <div className="outlet">
+        <form className="search-form">
         <Search   value={searchTerm}
                   onKeyUp={this.handleSearch} />
+        </form>
+        <nav>
         <Picker 
-                  onClick={this.handleClick}/>      
+                  onClick={this.handleClick}/>     
+                  </nav >
+        <div className="list-container">
         {selectedFilter ? <Tracks tracks={tracks} /> : <Albums albums={albums} />}  
+        </div>
+      </div>
       </div>
     )
   }

@@ -1,3 +1,4 @@
+require("./search.css")
 import React, { PropTypes } from 'react'
 
 const Search = ({onKeyUp}) => (

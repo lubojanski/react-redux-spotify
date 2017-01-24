@@ -1,0 +1,15 @@
+input {
+    width: 310px;
+    height: 2.5em;
+    margin: auto;
+    outline: none;
+    padding-left: 1em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #4f3d29;
+    cursor: pointer;
+}
+
+input:hover {
+    border: 1px solid #ff9523;
+}

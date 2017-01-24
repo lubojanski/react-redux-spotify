@@ -1,0 +1,43 @@
+.container {
+-webkit-background-size:cover;
+background:linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.3) );
+background-size:cover;
+margin:0 3em;
+min-height: 1000px;
+height: fit-content;
+overflow: hidden;
+}
+
+header {
+align-items:center;
+color:#FFF;
+display:flex;
+height:150px;
+justify-content:center;
+text-shadow:2px 2px 10px #b7ab9d;
+}
+
+.outlet {
+height:100%;
+text-align:center;
+}
+
+
+
+.list-container {
+margin:auto;
+text-align:left;
+width:420px;
+}
+
+
+
+
+@media screen and (max-width : 500px){
+.container {
+margin:0;
+}
+}
+
+
+

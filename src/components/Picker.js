@@ -1,3 +1,4 @@
+require("./picker.css")
 import React, { PropTypes } from 'react'
 
 const Picker = ({  onClick }) => (

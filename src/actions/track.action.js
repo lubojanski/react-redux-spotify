@@ -40,7 +40,7 @@ const shouldFetchTracks = (state, artist) => {
   return true // temp
 }
 export const fetchTracksIfNeeded = artist => (dispatch, getState) => {
- // if (shouldFetchAlbums(getState(), artist)) {
+  if (shouldFetchTracks(getState(), artist)) {
     return dispatch(fetchTracks(artist))
- // }
+  }
 }

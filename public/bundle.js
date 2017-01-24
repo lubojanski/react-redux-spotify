@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "6fbbff685f8e95e73e0e"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "38043c71d3451006dc76"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -8481,7 +8481,7 @@
 
 	var _root2 = _interopRequireDefault(_root);
 
-	var _App = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./containers/App\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var _App = __webpack_require__(311);
 
 	var _App2 = _interopRequireDefault(_App);
 
@@ -33268,6 +33268,339 @@
 	};
 
 	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(304); if (makeExportsHot(module, __webpack_require__(174))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot apply hot update to " + "input.action.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+
+/***/ },
+/* 311 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(79), RootInstanceProvider = __webpack_require__(87), ReactMount = __webpack_require__(89), React = __webpack_require__(174); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(174);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(285);
+
+	var _input = __webpack_require__(310);
+
+	var _album = __webpack_require__(303);
+
+	var _track = __webpack_require__(308);
+
+	var _Picker = __webpack_require__(312);
+
+	var _Picker2 = _interopRequireDefault(_Picker);
+
+	var _Albums = __webpack_require__(313);
+
+	var _Albums2 = _interopRequireDefault(_Albums);
+
+	var _Tracks = __webpack_require__(314);
+
+	var _Tracks2 = _interopRequireDefault(_Tracks);
+
+	var _Search = __webpack_require__(315);
+
+	var _Search2 = _interopRequireDefault(_Search);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var App = function (_Component) {
+	  _inherits(App, _Component);
+
+	  function App() {
+	    var _ref;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, App);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = App.__proto__ || Object.getPrototypeOf(App)).call.apply(_ref, [this].concat(args))), _this), _this.handleClick = function (event) {
+	      var nextFilter = Number.parseInt(event.currentTarget.dataset.id);
+	      _this.props.dispatch((0, _input.selectFilter)(nextFilter));
+	    }, _this.handleSearch = function (nextTerm) {
+	      _this.props.dispatch((0, _input.search)(nextTerm));
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+
+	  _createClass(App, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _props = this.props,
+	          dispatch = _props.dispatch,
+	          searchTerm = _props.searchTerm;
+
+	      dispatch((0, _album.fetchAlbumsIfNeeded)(searchTerm));
+	      dispatch((0, _track.fetchTracksIfNeeded)(searchTerm));
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      ////////////////////////////////////////////
+	      if (nextProps.searchTerm !== this.props.searchTerm) {
+	        var dispatch = nextProps.dispatch,
+	            searchTerm = nextProps.searchTerm;
+
+	        dispatch((0, _album.fetchAlbumsIfNeeded)(searchTerm));
+	        dispatch((0, _track.fetchTracksIfNeeded)(searchTerm));
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _props2 = this.props,
+	          selectedFilter = _props2.selectedFilter,
+	          albums = _props2.albums,
+	          tracks = _props2.tracks,
+	          isFetching = _props2.isFetching,
+	          searchTerm = _props2.searchTerm;
+
+	      var isEmpty = albums.length === 0;
+
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(_Search2.default, { value: searchTerm,
+	          onKeyUp: this.handleSearch }),
+	        _react2.default.createElement(_Picker2.default, {
+	          onClick: this.handleClick }),
+	        selectedFilter ? _react2.default.createElement(_Tracks2.default, { tracks: tracks }) : _react2.default.createElement(_Albums2.default, { albums: albums })
+	      );
+	    }
+	  }]);
+
+	  return App;
+	}(_react.Component);
+
+	App.propTypes = {
+	  selectedFilter: _react.PropTypes.number.isRequired,
+	  albums: _react.PropTypes.array.isRequired,
+	  tracks: _react.PropTypes.array.isRequired,
+	  isFetching: _react.PropTypes.bool,
+	  searchTerm: _react.PropTypes.string,
+	  dispatch: _react.PropTypes.func.isRequired
+	};
+
+
+	var mapStateToProps = function mapStateToProps(state) {
+	  //debugger;
+	  var selectedFilter = state.selectedFilter,
+	      albumsByArtist = state.albumsByArtist,
+	      tracksByArtist = state.tracksByArtist,
+	      searchTerm = state.searchTerm; //var selectedFilter = state.selectedFilter;
+
+	  var _ref2 = albumsByArtist.items || {
+	    items: []
+	  },
+	      albums = _ref2.items;
+
+	  var _ref3 = tracksByArtist.items || {
+	    items: []
+	  },
+	      tracks = _ref3.items;
+
+	  return {
+	    selectedFilter: selectedFilter,
+	    albums: albums,
+	    tracks: tracks,
+	    searchTerm: searchTerm
+	  };
+	};
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)(App);
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(304); if (makeExportsHot(module, __webpack_require__(174))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot apply hot update to " + "App.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+
+/***/ },
+/* 312 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(79), RootInstanceProvider = __webpack_require__(87), ReactMount = __webpack_require__(89), React = __webpack_require__(174); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(174);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Picker = function Picker(_ref) {
+	  var onClick = _ref.onClick;
+	  return _react2.default.createElement(
+	    'span',
+	    null,
+	    _react2.default.createElement(
+	      'button',
+	      { type: 'button', 'data-id': '0', onClick: onClick },
+	      'Albums'
+	    ),
+	    _react2.default.createElement(
+	      'button',
+	      { type: 'button', 'data-id': '1', onClick: onClick },
+	      'Tracks'
+	    )
+	  );
+	};
+
+	Picker.propTypes = {
+	  onClick: _react.PropTypes.func.isRequired
+	};
+	//className={this.state.selectedItem == 1 ? "on" : "off"}
+	exports.default = Picker;
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(304); if (makeExportsHot(module, __webpack_require__(174))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot apply hot update to " + "Picker.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+
+/***/ },
+/* 313 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(79), RootInstanceProvider = __webpack_require__(87), ReactMount = __webpack_require__(89), React = __webpack_require__(174); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(174);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Albums = function Albums(_ref) {
+	  var albums = _ref.albums;
+	  return _react2.default.createElement(
+	    'ul',
+	    null,
+	    albums.map(function (album, i) {
+	      return _react2.default.createElement(
+	        'li',
+	        { key: i },
+	        album.artist,
+	        ' ',
+	        album.name
+	      );
+	    })
+	  );
+	};
+	//<img src={album.cover} alt=""/> 
+	Albums.propTypes = {
+	  albums: _react.PropTypes.array.isRequired
+	};
+
+	exports.default = Albums;
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(304); if (makeExportsHot(module, __webpack_require__(174))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot apply hot update to " + "Albums.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+
+/***/ },
+/* 314 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(79), RootInstanceProvider = __webpack_require__(87), ReactMount = __webpack_require__(89), React = __webpack_require__(174); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(174);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Tracks = function Tracks(_ref) {
+	  var tracks = _ref.tracks;
+	  return _react2.default.createElement(
+	    'ul',
+	    null,
+	    tracks.map(function (track, i) {
+	      return _react2.default.createElement(
+	        'li',
+	        { key: i },
+	        track.artist,
+	        ' ',
+	        track.name
+	      );
+	    })
+	  );
+	};
+	//<img src={track.cover} alt=""/> 
+	Tracks.propTypes = {
+	  tracks: _react.PropTypes.array.isRequired
+	};
+
+	exports.default = Tracks;
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(304); if (makeExportsHot(module, __webpack_require__(174))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot apply hot update to " + "Tracks.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
+
+/***/ },
+/* 315 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {/* REACT HOT LOADER */ if (true) { (function () { var ReactHotAPI = __webpack_require__(79), RootInstanceProvider = __webpack_require__(87), ReactMount = __webpack_require__(89), React = __webpack_require__(174); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(174);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Search = function Search(_ref) {
+	  var _onKeyUp = _ref.onKeyUp;
+	  return _react2.default.createElement(
+	    "span",
+	    null,
+	    _react2.default.createElement("input", { type: "text", onKeyUp: function onKeyUp(e) {
+	        return _onKeyUp(e.target.value);
+	      } })
+	  );
+	};
+
+	Search.propTypes = {
+	  value: _react.PropTypes.string,
+	  onKeyUp: _react.PropTypes.func.isRequired
+	};
+
+	exports.default = Search;
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (true) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = __webpack_require__(304); if (makeExportsHot(module, __webpack_require__(174))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot apply hot update to " + "Search.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
 /***/ }

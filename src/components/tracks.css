@@ -1,0 +1,62 @@
+.tracks-container-item{
+    width: 100%;
+    height: 100px;
+    margin-top: 1.1em;
+    display: flex;
+    flex-flow: row wrap;
+}
+.tracks-container-item img{
+    display: inline-block;
+        margin: 10px 0 5px 10px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 14px #b7ab9d;
+    width: 70px;
+    height: 70px;
+}
+.tracks-container-item:hover {
+    border-radius: 10px;
+    border: 0.5px solid #ff9523;
+    box-shadow: 5px 5px 14px #b7ab9d;
+}
+.album-links{
+    display: inline-block;
+    text-shadow: 2px 2px 10px #b7ab9d;
+}
+.album-links a:hover{
+    color: #ff9523;
+    text-shadow: none;
+}
+.track-link{
+    text-shadow: 2px 2px 10px #b7ab9d;
+        margin: 10px 0 5px 10px;
+    color: initial;
+    text-decoration: none;
+    box-sizing: border-box;
+    display: block;
+    font-size: 0.9em;
+    width: 250px;
+    padding-left: 2em;
+}
+
+.album-link{
+    text-shadow: 2px 2px 10px #b7ab9d;
+    margin-left: 10px;
+    text-decoration: none;
+        color: initial;
+    box-sizing: border-box;
+    display: block;
+    padding-top: 1em;
+    font-size: 0.7em;
+    width: 200px;
+    padding-left: 2.5em;
+    cursor: pointer;
+    
+}
+
+
+@media screen and (max-width : 500px){
+.track-link, .album-link {
+    padding-left: 0.2em;
+    width: 200px;
+}
+}
