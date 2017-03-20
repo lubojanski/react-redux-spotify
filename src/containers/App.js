@@ -11,18 +11,26 @@ import Tracks from '../components/Tracks'
 import Search from '../components/Search'
 
 class App extends Component {
+      constructor(props) {
+        super(props);
+        this.state = {active: false};
+    }
+
   static propTypes = {
     selectedFilter: PropTypes.number.isRequired,
     albums: PropTypes.array.isRequired,
-    
     tracks: PropTypes.array.isRequired,
     isFetching: PropTypes.bool,
     searchTerm: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     isSelected: PropTypes.bool,
-    albumTrackss: PropTypes.array.isRequired,
+    selectedAlbumTracks: PropTypes.array.isRequired,
     showAlbumTracks: PropTypes.number
   }
+  click() {
+        this.setState({active: true});
+    }
+
   componentDidMount() {
     const { dispatch, searchTerm } = this.props
     dispatch(fetchAlbumsIfNeeded(searchTerm))
@@ -46,7 +54,6 @@ class App extends Component {
   }
 
   handleAlbumClick = (albumHref, index) => {
-    
     if (this.isSelected ){
           this.isSelected = false
           this.props.dispatch(showAlbumTracks(999))
@@ -58,14 +65,12 @@ class App extends Component {
           this.isSelected = true
           this.props.dispatch(showAlbumTracks(index))
           console.log(this.isSelected);
-        }
+      }
   }
 
   render() {
-    const { selectedFilter, albums, tracks, isFetching, searchTerm, albumTrackss, showAlbumTracks} = this.props
-    const isEmpty = albumTrackss.length === 0
-    //const albumTr = Object.keys(albumTrackss).map(function(val) { return [val] });
-    //console.log(albumTr);
+    const { selectedFilter, albums, tracks, isFetching, searchTerm, selectedAlbumTracks, showAlbumTracks} = this.props
+
     return (
       <div className="container">
         <header>
@@ -90,9 +95,10 @@ class App extends Component {
              : 
              (<Albums albums={albums} 
               isSelected={showAlbumTracks}
-              albumTracks={albumTrackss}
+              albumTracks={selectedAlbumTracks}
               onClick={this.handleAlbumClick}
-              showAlbumTracks={showAlbumTracks} />)
+              showAlbumTracks={showAlbumTracks}
+              clicked={this.state.active} />)
             }  
       </div>
       </div>
@@ -100,31 +106,13 @@ class App extends Component {
     )
   }
 }
-// // 
+
 const mapStateToProps = state => {
   const { selectedFilter, albumsByArtist, tracksByArtist, searchTerm, showAlbumTracks, albumTracks} = state    
-  debugger;
-  const {
-    items: albums
-  } = albumsByArtist.items ||  
-  {
-    items: []
-  }
 
-  const {
-    items: tracks
-  } = tracksByArtist.items ||  
-  {
-    items: []
-  }
-
-    const {
-    items: albumTrackss
-  } = albumTracks.items ||  
-  {
-    items: []
-  }
-
+  const {items: albums } = albumsByArtist.items || { items: [] }
+  const { items: tracks} = tracksByArtist.items || { items: [] }
+  const { items: selectedAlbumTracks } = albumTracks.items || {items: []}
 
   return {
     selectedFilter,
@@ -132,7 +120,7 @@ const mapStateToProps = state => {
     tracks,
     searchTerm,
     showAlbumTracks,
-    albumTrackss
+    selectedAlbumTracks
   }
 }
 

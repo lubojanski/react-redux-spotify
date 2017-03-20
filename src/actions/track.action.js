@@ -21,9 +21,6 @@ export const receiveTracks = (artist, json) => ({
   })
 })
 
-
-
-
 const fetchTracks = artist  => dispatch => {
   dispatch(requestTracks(artist))
   return fetch(`https://api.spotify.com/v1/search?q=artist:${artist}&type=track`)

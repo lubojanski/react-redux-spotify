@@ -1,5 +1,5 @@
 {
-  "name": "async",
+  "name": "spotiops",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -28,6 +28,7 @@
     "react-dom": "^15.3.0",
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
+    "redux-devtools-extension": "^2.0.0",
     "redux-thunk": "^2.1.0"
   },
   "babel": {
