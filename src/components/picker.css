@@ -15,7 +15,7 @@ button:link {
 
 button:hover {
     color: #ff9523;
-    background-color: #e2cab1;
+    background-color: #f4eade;
 }
 
 button.active {
@@ -25,9 +25,9 @@ button.active {
 }
 .on{
     color: #ff9523;
-    background-color: #e2cab1;
+    background-color: #f4eade
 }
 .off{
     color: initial;
-    background-color: #f4eade;
+    background-color: #eee;
 }
